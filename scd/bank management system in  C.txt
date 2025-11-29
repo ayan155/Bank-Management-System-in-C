@@ -1,0 +1,88 @@
+#include <iostream>
+#include <vector>
+using namespace std;
+
+class Account {
+    int accountNumber;
+    string holderName;
+    double balance;
+public:
+    void create() {
+        cout << "Enter Account Number: ";
+        cin >> accountNumber;
+        cout << "Enter Name: ";
+        cin >> holderName;
+        cout << "Enter Initial Balance: ";
+        cin >> balance;
+    }
+    void display() {
+        cout << accountNumber << " " << holderName << " " << balance << endl;
+    }
+    void deposit(double amount) {
+        balance += amount;
+    }
+    void withdraw(double amount) {
+        if (amount <= balance) balance -= amount;
+        else cout << "Insufficient Balance\n";
+    }
+    int getAccountNumber() { return accountNumber; }
+};
+
+class Bank {
+    vector<Account> accounts;
+public:
+    void createAccount() {
+        Account acc;
+        acc.create();
+        accounts.push_back(acc);
+    }
+    void showAllAccounts() {
+        for (auto &acc : accounts) acc.display();
+    }
+    void searchAccount() {
+        int num;
+        cout << "Enter Account Number: ";
+        cin >> num;
+        for (auto &acc : accounts) {
+            if (acc.getAccountNumber() == num) acc.display();
+        }
+    }
+    void depositToAccount() {
+        int num;
+        double amt;
+        cout << "Enter Account Number and Amount: ";
+        cin >> num >> amt;
+        for (auto &acc : accounts) {
+            if (acc.getAccountNumber() == num) acc.deposit(amt);
+        }
+    }
+    void withdrawFromAccount() {
+        int num;
+        double amt;
+        cout << "Enter Account Number and Amount: ";
+        cin >> num >> amt;
+        for (auto &acc : accounts) {
+            if (acc.getAccountNumber() == num) acc.withdraw(amt);
+        }
+    }
+    void run() {
+        int choice;
+        do {
+            cout << "\n1.Create Account\n2.Show All\n3.Search\n4.Deposit\n5.Withdraw\n6.Exit\nEnter choice: ";
+            cin >> choice;
+            switch(choice) {
+                case 1: createAccount(); break;
+                case 2: showAllAccounts(); break;
+                case 3: searchAccount(); break;
+                case 4: depositToAccount(); break;
+                case 5: withdrawFromAccount(); break;
+            }
+        } while(choice != 6);
+    }
+};
+
+int main() {
+    Bank bank;
+    bank.run();
+    return 0;
+}
